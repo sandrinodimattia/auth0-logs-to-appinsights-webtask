@@ -27,7 +27,7 @@ wt create https://raw.githubusercontent.com/sandrinodimattia/auth0-logs-to-appin
     --secret AUTH0_DOMAIN={YOUR_AUTH0_DOMAIN} \
     --secret AUTH0_GLOBAL_CLIENT_ID={YOUR_AUTH0_GLOBAL_CLIENT_ID} \
     --secret AUTH0_GLOBAL_CLIENT_SECRET={YOUR_AUTH0_GLOBAL_CLIENT_SECRET} \
-    --secret APPINSIGHTS_INSTRUMENTATIONKEY=9c812656-5950-4de5-a34d-391774691855
+    --secret APPINSIGHTS_INSTRUMENTATIONKEY={YOUR_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY}
 ```
 
 If you want to run it on a schedule (run every 5 minutes for example):
@@ -38,7 +38,7 @@ wt cron schedule \
     --secret AUTH0_DOMAIN={YOUR_AUTH0_DOMAIN} \
     --secret AUTH0_GLOBAL_CLIENT_ID={YOUR_AUTH0_GLOBAL_CLIENT_ID} \
     --secret AUTH0_GLOBAL_CLIENT_SECRET={YOUR_AUTH0_GLOBAL_CLIENT_SECRET} \
-    --secret APPINSIGHTS_INSTRUMENTATIONKEY=9c812656-5950-4de5-a34d-391774691855 \
+    --secret APPINSIGHTS_INSTRUMENTATIONKEY={YOUR_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY} \
     --json \
     "*/5 * * * *" \
     https://raw.githubusercontent.com/sandrinodimattia/auth0-logs-to-appinsights/master-webtask/task.js
