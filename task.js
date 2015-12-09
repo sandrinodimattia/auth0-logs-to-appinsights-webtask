@@ -203,7 +203,7 @@ module.exports = (ctx, done) => {
     } else {
       console.log('No data to flush...');
 
-      return callback(null, { itemsAccepted: 0 });
+      return callback(null, '{ "itemsAccepted": 0 }');
     }
   };
 
