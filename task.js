@@ -58,14 +58,16 @@ module.exports = (ctx, done) => {
    * If this is a scheduled task, we'll get the last log checkpoint from the previous run and continue from there.
    */
   let checkpointId = null;
+  let startCheckpointId = null;
   if (ctx.body && ctx.body.results && ctx.body.results.length > 0) {
     console.log('Trying to get last checkpointId from previous run.');
 
     for (var i = 0; i < ctx.body.results.length; i++) {
-      if (ctx.body.results[i].statusCode === 200){
+      if (ctx.body.results[i].statusCode === 200 && ctx.body.results[i].body){
         var result = JSON.parse(ctx.body.results[i].body);
         if (result && result.checkpointId) {
           checkpointId = result.checkpointId;
+          startCheckpointId = result.checkpointId;
         }
         break;
       }
@@ -192,7 +194,7 @@ module.exports = (ctx, done) => {
     console.log('Flushing all data...');
 
     client.sendPendingData((response) => {
-      return callback(null, JSON.parse(response));
+      return callback(null, response);
     });
   };
 
@@ -210,15 +212,32 @@ module.exports = (ctx, done) => {
       }
 
       exportLogs(logs, (err, response) => {
-        if (response.itemsAccepted > 0) {
-            console.log('Items accepted (Errors/Events):', response.itemsAccepted);
-            return done(null, {
-              checkpointId,
-              ...response
-            });
+        try {
+          response = JSON.parse(response);
+        } catch (e) {
+          console.log('Error parsing response, this might indicate that an error occurred:', response);
+          return done({ error: response }, {
+            startCheckpointId,
+            checkpointId: startCheckpointId
+          });
         }
 
-        return done(null, response);
+        // At least one item we sent was accepted, so we're good and next run can continue where we stopped.
+        if (response.itemsAccepted > 0) {
+          console.log('Items accepted (Errors/Events):', response.itemsAccepted);
+          return done(null, {
+            startCheckpointId,
+            checkpointId,
+            ...response
+          });
+        }
+
+        // None of our items were accepted, next run should continue from same starting point.
+        console.log('No items accepted.');
+        return done(null, {
+          checkpointId: startCheckpointId,
+          ...response
+        });
       });
     });
   });
