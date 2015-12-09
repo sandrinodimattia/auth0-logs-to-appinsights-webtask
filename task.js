@@ -69,7 +69,7 @@ module.exports = (ctx, done) => {
         if (result && result.checkpointId) {
           checkpointId = result.checkpointId;
           startCheckpointId = result.checkpointId;
-          
+
           console.log (' > This is the last one we want to continue from.');
           break;
         }
@@ -194,11 +194,17 @@ module.exports = (ctx, done) => {
       client.trackEvent(record.type, record);
     });
 
-    console.log('Flushing all data...');
+    if (logs && logs.length) {
+      console.log('Flushing all data...');
 
-    client.sendPendingData((response) => {
-      return callback(null, response);
-    });
+      client.sendPendingData((response) => {
+        return callback(null, response);
+      });
+    } else {
+      console.log('No data to flush...');
+
+      return callback(null, { itemsAccepted: 0 });
+    }
   };
 
   /*
@@ -226,7 +232,7 @@ module.exports = (ctx, done) => {
         }
 
         // At least one item we sent was accepted, so we're good and next run can continue where we stopped.
-        if (response.itemsAccepted > 0) {
+        if (response.itemsAccepted && response.itemsAccepted > 0) {
           console.log('Items accepted (Errors/Events):', response.itemsAccepted);
           return done(null, {
             startCheckpointId,
