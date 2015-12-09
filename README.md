@@ -41,7 +41,7 @@ wt cron schedule \
     --secret APPINSIGHTS_INSTRUMENTATIONKEY={YOUR_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY} \
     --json \
     "*/5 * * * *" \
-    https://raw.githubusercontent.com/sandrinodimattia/auth0-logs-to-appinsights/master-webtask/task.js
+    https://raw.githubusercontent.com/sandrinodimattia/auth0-logs-to-appinsights-webtask/master/task.js
 ```
 
 > You can get your Global Client Id/Secret here: https://auth0.com/docs/api/v1

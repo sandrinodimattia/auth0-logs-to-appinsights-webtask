@@ -63,13 +63,16 @@ module.exports = (ctx, done) => {
     console.log('Trying to get last checkpointId from previous run.');
 
     for (var i = 0; i < ctx.body.results.length; i++) {
+      console.log (' > Run:', ctx.body.results[i]);
       if (ctx.body.results[i].statusCode === 200 && ctx.body.results[i].body){
         var result = JSON.parse(ctx.body.results[i].body);
         if (result && result.checkpointId) {
           checkpointId = result.checkpointId;
           startCheckpointId = result.checkpointId;
+          
+          console.log (' > This is the last one we want to continue from.');
+          break;
         }
-        break;
       }
     };
 
