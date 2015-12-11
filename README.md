@@ -1,6 +1,6 @@
 # Auth0 - Logs to Application Insights Webtask
 
-A webtask that will take all of your Auth0 logs and export them to Application Insights.
+A webtask that will take all of your Auth0 logs and export them to Application Insights. More information is available in this blog post: [Transferring your Auth0 audit logs to Application Insights using a scheduled Webtask](http://fabriccontroller.net/transferring-your-auth0-audit-logs-to-application-insights-using-a-scheduled-webtask/).
 
 ## Configure Application Insights
 
@@ -24,10 +24,10 @@ If you just want to run it once:
 ```
 wt create https://raw.githubusercontent.com/sandrinodimattia/auth0-logs-to-appinsights-webtask/master/task.js \
     --name auth0-logs-to-appinsights \
-    --secret AUTH0_DOMAIN={YOUR_AUTH0_DOMAIN} \
-    --secret AUTH0_GLOBAL_CLIENT_ID={YOUR_AUTH0_GLOBAL_CLIENT_ID} \
-    --secret AUTH0_GLOBAL_CLIENT_SECRET={YOUR_AUTH0_GLOBAL_CLIENT_SECRET} \
-    --secret APPINSIGHTS_INSTRUMENTATIONKEY={YOUR_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY}
+    --secret AUTH0_DOMAIN="YOUR_AUTH0_DOMAIN" \
+    --secret AUTH0_GLOBAL_CLIENT_ID="YOUR_AUTH0_GLOBAL_CLIENT_ID" \
+    --secret AUTH0_GLOBAL_CLIENT_SECRET="YOUR_AUTH0_GLOBAL_CLIENT_SECRET" \
+    --secret APPINSIGHTS_INSTRUMENTATIONKEY="YOUR_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY"
 ```
 
 If you want to run it on a schedule (run every 5 minutes for example):
@@ -35,10 +35,10 @@ If you want to run it on a schedule (run every 5 minutes for example):
 ```
 wt cron schedule \
     --name auth0-logs-to-appinsights \
-    --secret AUTH0_DOMAIN={YOUR_AUTH0_DOMAIN} \
-    --secret AUTH0_GLOBAL_CLIENT_ID={YOUR_AUTH0_GLOBAL_CLIENT_ID} \
-    --secret AUTH0_GLOBAL_CLIENT_SECRET={YOUR_AUTH0_GLOBAL_CLIENT_SECRET} \
-    --secret APPINSIGHTS_INSTRUMENTATIONKEY={YOUR_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY} \
+    --secret AUTH0_DOMAIN="YOUR_AUTH0_DOMAIN" \
+    --secret AUTH0_GLOBAL_CLIENT_ID="YOUR_AUTH0_GLOBAL_CLIENT_ID" \
+    --secret AUTH0_GLOBAL_CLIENT_SECRET="YOUR_AUTH0_GLOBAL_CLIENT_SECRET" \
+    --secret APPINSIGHTS_INSTRUMENTATIONKEY="YOUR_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY" \
     --json \
     "*/5 * * * *" \
     https://raw.githubusercontent.com/sandrinodimattia/auth0-logs-to-appinsights-webtask/master/task.js
